@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Gestión de Usuarios - Proyecto Sleep</title>
+    <meta charset="UTF-8">
+    <style>
+        body { font-family: sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; }
+        .contenedor { background-color: #f4f4f4; padding: 20px; border-radius: 8px; }
+        input { width: 100%; padding: 8px; margin: 5px 0 15px 0; box-sizing: border-box; }
+        button { background-color: #4CAF50; color: white; padding: 10px 20px; border: none; cursor: pointer; width: 100%; }
+        button:hover { opacity: 0.8; }
+        table { width: 100%; border-collapse: collapse; margin-top: 30px; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #04AA6D; color: white; }
+        .btn-borrar { background-color: #f44336; padding: 5px 10px; text-decoration: none; color: white; border-radius: 4px; font-size: 0.8em;}
+        .btn-editar { background-color: #008CBA; padding: 5px 10px; text-decoration: none; color: white; border-radius: 4px; font-size: 0.8em;}
+    </style>
+</head>
+<body>
+
+<h1>💤 Panel de Control - Usuarios</h1>
+
+<div class="contenedor">
+    <h3>Datos del Usuario</h3>
+    <form th:action="@{/usuarios/guardar}" th:object="${usuario}" method="post">
+
+        <input type="hidden" th:field="*{idUsuario}" />
+
+        <label>Nombre del Usuario:</label>
+        <input type="text" th:field="*{nombre}" placeholder="Ej: Diego Luque" required />
+
+        <label>Edad:</label>
+        <input type="number" th:field="*{edad}" placeholder="Ej: 22" />
+
+        <label>Peso (kg):</label>
+        <input type="number" step="0.1" th:field="*{peso}" placeholder="Ej: 75.5" />
+
+        <label>Nivel de Stress (1-10):</label>
+        <input type="number" th:field="*{nivelStress}" placeholder="Ej: 5" />
+
+        <label>Horario de Sueño Habitual:</label>
+        <input type="text" th:field="*{horarioSueno}" placeholder="Ej: 23:00 - 07:00" />
+
+        <button type="submit">Guardar Datos</button>
+    </form>
+</div>
+
+<h3>Usuarios en el Sistema</h3>
+<table>
+    <thead>
+    <tr>
+        <th>Nombre</th>
+        <th>Edad</th>
+        <th>Peso</th>
+        <th>Stress</th>
+        <th>Horario</th>
+        <th>Acciones</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="u : ${listaUsuarios}">
+        <td th:text="${u.nombre}">Nombre</td>
+        <td th:text="${u.edad}">0</td>
+        <td th:text="${u.peso}">0.0</td>
+        <td th:text="${u.nivelStress}">0</td>
+        <td th:text="${u.horarioSueno}">--</td>
+        <td>
+            <a th:href="@{/usuarios/editar/{id}(id=${u.idUsuario})}" class="btn-editar">Editar</a>
+            <a th:href="@{/usuarios/borrar/{id}(id=${u.idUsuario})}" class="btn-borrar">Borrar</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>
